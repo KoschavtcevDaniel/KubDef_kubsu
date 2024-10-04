@@ -1,4 +1,5 @@
 from random import randint
+import math
 
 
 def find_d(e_, phi_):
@@ -34,16 +35,16 @@ print(f'N = {n}')
 phi = (p-1) * (q-1)
 print(f'phi = {phi}')
 
-e = randint(2, phi)
-while not (check(e) and e < phi):
+e = randint(2, phi-1)
+while not (math.gcd(e, phi) == 1):
     print(e)
-    e = randint(2, phi)
+    e = randint(2, phi-1)
 
 print(f'\ne = {e}')
 
 d = find_d(e, phi)
 print(f'd = {d}')
-print(f'\nOpen key - ({e}, {n}), CLosed key - ({d}, {n}) ')
+print(f'\nOpen key - ({e}, {n}), Closed key - ({d}, {n}) ')
 
 print('\nInput your num to encrypt')
 inp = int(input())
