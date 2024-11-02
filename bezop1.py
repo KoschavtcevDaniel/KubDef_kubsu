@@ -1,63 +1,54 @@
-from random import randint
-import math
+# from time import time
+#
+# p = 12539
+# a = 1
+# b = 0
+#
+# def proba(a,b,p):
+# #перебирает все конечные точки кривой y^2=x^3+ax+b в поле GF(p)
+# #если точка лежит на кривой, то функция возвращает эту точку и заканчивает работу
+#     for x in range(1,p):
+#         y2=(pow(x,3)+a*x+b)%p
+#         for y in range(0,(p-1)/2):
+#             if pow(y,2,p)==y2:
+#                 return x,y
 
 
-def find_d(e_, phi_):
-    d_ = 1
-    for i in range(2, 99999):
-        if (i * e_) % phi_ == 1 and i != e_:
-            d_ = i
-            break
-    return d_
+def gcdex(a, b):
+    if b == 0:
+        return a, 1, 0
+    else:
+        d, x, y = gcdex(b, a % b)
+        return d, y, x - y * (a // b)
 
 
-def check(a):
-    k = 0
-    fl = 0
-    for i in range(2, a // 2 + 1):
-        if a % i == 0:
-            k = k + 1
-    if k <= 0:
-        fl = 1
-    return fl
+def obr(a, b):
+#Находит а^(-1) mod b, то есть такое с, что ac=1(mod b)
+    g=gcdex(a, b)
+    if g[0] == 1:
+        return g[1]%b
+    else:
+        return 0
 
+print(obr(30, 71))
+print(-1314*45 % 71)
+#
+# def porjadok(a,b,p):
+#     s = 1
+#     for x in range(p): #перебераем х от 0 до <p, то есть до p-1
+#         y2=(pow(x,3)+a*x+b)%p
+#         for y in range(0,p):
+#             if (pow(y,2)%p)==y2:
+#                 s+=1
+#     return(s)
+#
+#
+# def porjadoktime(a,b,p):
+#     now1 = time() #запоминаем время начала работы
+#     s=porjadok(a,b,p)
+#     now2 = time()
+#     delta = now2 - now1
+#     print("Порядок кривой y^2=x^3+",a," x + ",b," (mod ",p,") равен ",s,". Время выполнения ",delta," сек")
+#
 
-print('Input p and q')
-p, q = [int(_) for _ in input().split()]
-
-if not check(p) or not check(q):
-    print('Wrong, input simple num')
-    p, q = [int(_) for _ in input().split()]
-
-n = p * q
-print(f'N = {n}')
-
-phi = (p-1) * (q-1)
-print(f'phi = {phi}')
-
-e = randint(2, phi-1)
-while not (math.gcd(e, phi) == 1):
-    print(e)
-    e = randint(2, phi-1)
-
-print(f'\ne = {e}')
-
-d = find_d(e, phi)
-print(f'd = {d}')
-print(f'\nOpen key - ({e}, {n}), Closed key - ({d}, {n}) ')
-
-print('\nInput your num to encrypt')
-inp = int(input())
-while inp >= n:
-    print(f'\nWrong, input num < {n}')
-    inp = int(input())
-
-print('\nEncryption...')
-
-ans = pow(inp, e, n)
-
-print(f'\nYour encrypt message {ans}\n')
-
-
-
-
+# print(proba(a,b,p))
